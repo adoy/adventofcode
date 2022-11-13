@@ -1,5 +1,5 @@
 a.out
-day*/*
-!day*/*.txt
-!day*/*.c
+*/day*/*
+!*/day*/*.txt
+!*/day*/*.c
 
