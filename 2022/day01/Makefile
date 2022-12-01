@@ -18,3 +18,5 @@ clean:
 bash:
 	./d1.sh < input.txt
 
+php:
+	php d1.php < input.txt
