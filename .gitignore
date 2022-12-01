@@ -1,5 +1,8 @@
 a.out
 */day*/*
+!Makefile
 !*/day*/*.txt
 !*/day*/*.c
+!*/day*/*.cpp
+!*/day*/*.sh
 

@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -ansi -O3
 
-SRC = $(wildcard */*.c)
+SRC = $(sort $(wildcard */*.c))
 BIN = $(SRC:.c=)
 
 all: $(BIN)
