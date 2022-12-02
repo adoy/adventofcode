@@ -7,3 +7,7 @@ clean:
 
 php:
 	php d2.php < input.txt
+
+bash:
+	./d2p1.sh < input.txt
+	./d2p2.sh < input.txt
