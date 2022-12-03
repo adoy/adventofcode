@@ -2,8 +2,9 @@ DAYS = $(sort $(wildcard day$(day)*/))
 
 run:
 	@for I in $(DAYS); do \
-		echo $$I; \
+		echo "$$I\n====="; \
 		$(MAKE) --no-print-directory -C $$I run; \
+		echo " "; \
 	done
 
 test:
