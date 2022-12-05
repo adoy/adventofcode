@@ -9,7 +9,9 @@ run:
 
 test:
 	@for I in $(DAYS); do \
+		echo "$$I\n====="; \
 		$(MAKE) --no-print-directory -C $$I test; \
+		echo " "; \
 	done
 
 clean:
