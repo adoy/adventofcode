@@ -51,23 +51,35 @@ readonly class Map
 
     public function countPositionsNotHavingBeaconsOnLine(int $y): int
     {
-        $line = [];
+        $ranges = [];
         foreach ($this->sensors as $sensor) {
-            if ($y === $sensor->beaconY) {
-                $line[$sensor->beaconX] = 'B';
-            }
-
             $md = $sensor->getManathanDistanceFromBeacon();
 
             if ($y >= $sensor->y - $md && $y <= $sensor->y + $md) {
                 $hd = abs(abs($sensor->y - $y) - $md);
-                for ($x = $sensor->x - $hd; $x <= $sensor->x + $hd; ++$x) {
-                    $line[$x] ??= '#';
+                if ($y === $sensor->beaconY && $sensor->beaconX >= $sensor->x - $hd && $sensor->beaconX <= $sensor->x + $hd) {
+                    $ranges[] = [$sensor->x - $hd, $sensor->beaconX - 1];
+                    $ranges[] = [$sensor->beaconX + 1, $sensor->x + $hd];
+                } else {
+                    $ranges[] = [$sensor->x - $hd, $sensor->x + $hd];
                 }
             }
         }
 
-        return count(array_filter($line, fn ($v) => '#' === $v));
+        usort($ranges, fn($a, $b) => $a[0] <=> $b[0]);
+        $beaconsFreePos = 0;
+        $previous = array_shift($ranges);
+        while ($range = array_shift($ranges)) {
+            if ($range[0] <= $previous[1] && $range[1] > $previous[1]) {
+                $previous[1] = $range[1];
+            } elseif ($range[0] > $previous[1]) {
+                $beaconsFreePos += $previous[1] - $previous[0] + 1;
+                $previous = $range;
+            }
+        }
+        $beaconsFreePos += $previous[1] - $previous[0] + 1;
+
+        return $beaconsFreePos;
     }
 
     private function canHaveBeacon(int $x, int $y): bool
