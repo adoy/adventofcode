@@ -8,18 +8,13 @@ using namespace std;
 
 class Sensor {
 public:
-  Sensor(int x, int y, int beaconX, int beaconY) {
-    this->x = x;
-    this->y = y;
-    this->beaconX = beaconX;
-    this->beaconY = beaconY;
-	this->distance = abs(beaconX - x) + abs(beaconY - y);
-  }
   int x;
   int y;
-  int beaconY;
   int beaconX;
+  int beaconY;
   int distance;
+  Sensor(int x, int y, int beaconX, int beaconY)
+	  : x(x), y(y), beaconX(beaconX), beaconY(beaconY), distance(abs(beaconX - x) + abs(beaconY - y)) {}
 };
 
 class Map {
@@ -27,13 +22,13 @@ private:
   vector<Sensor> sensors;
 
 public:
-  Map(vector<Sensor> sensors) { this->sensors = sensors; }
+  Map(vector<Sensor> sensors): sensors(sensors) {}
 
-  int countPositionsNotHavingBeaconsOnLine(int y) {
+  int countPositionsNotHavingBeaconsOnLine(int y) const {
     int freePositions = 0;
     vector<pair<int, int>> ranges;
 
-    for (Sensor sensor : sensors) {
+    for (const Sensor &sensor : sensors) {
       if (y >= sensor.y - sensor.distance && y <= sensor.y + sensor.distance) {
         int hd = abs(abs(sensor.y - y) - sensor.distance);
         if (sensor.beaconY == y && sensor.beaconX >= sensor.x - hd &&
@@ -54,7 +49,7 @@ public:
 
     pair<int, int> previous = ranges[0];
     ranges.erase(ranges.begin());
-    for (pair<int, int> range : ranges) {
+    for (const pair<int, int> &range : ranges) {
       if (range.first <= previous.second && range.second > previous.second) {
         previous = {previous.first, range.second};
       } else if (range.first > previous.second) {
@@ -68,8 +63,8 @@ public:
     return freePositions;
   }
 
-  bool canHaveBeacon(int x, int y) {
-    for (Sensor sensor : sensors) {
+  bool canHaveBeacon(int x, int y) const {
+    for (const Sensor &sensor : sensors) {
       if (sensor.distance >= abs(x - sensor.x) + abs(y - sensor.y)) {
         return false;
       }
@@ -77,8 +72,8 @@ public:
     return true;
   }
 
-  long long getTuningFrequency(int lowerBound, int higherBound) {
-    for (Sensor sensor : sensors) {
+  long long getTuningFrequency(int lowerBound, int higherBound) const {
+    for (const Sensor &sensor : sensors) {
       int md = sensor.distance + 1;
       int minY = max(lowerBound, sensor.y - md);
       int maxY = min(higherBound, sensor.y + md);

@@ -1,10 +1,19 @@
-run: php
+SRC=$(wildcard *.cpp)
+BIN=$(SRC:.cpp=)
+	GXX=g++
+	CXXFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g
 
-.PHONY: clean
-clean: ;
+run: $(BIN)
+	./$(BIN) < input.txt
 
 test: $(BIN)
-	php d9.php < test.txt
+	./$(BIN) < test.txt
+
+%: %.cpp
+	$(GXX) $(CXXFLAGS) $< -o $@
+
+clean:
+	rm -f $(BIN)
 
 php:
 	php d9.php < input.txt

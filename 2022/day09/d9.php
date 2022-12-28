@@ -58,7 +58,7 @@ class Knot
 
     private function pullToward(Knot $other): void
     {
-        if (!$this->isTouching($this->next)) {
+        if (!$this->isTouching($other)) {
             $other->move($this->x <=> $other->x, $this->y <=> $other->y);
         }
     }

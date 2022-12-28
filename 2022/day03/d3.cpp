@@ -3,7 +3,7 @@
 
 using namespace std;
 
-char findCommonChar2(string s1, string s2) {
+static char findCommonChar2(const string &s1, const string &s2) {
   for (int i = 0; i < (int)s1.length(); i++) {
     for (int j = 0; j < (int)s2.length(); j++) {
       if (s1[i] == s2[j]) {
@@ -14,7 +14,7 @@ char findCommonChar2(string s1, string s2) {
   return 0;
 }
 
-char findCommonChar3(string s1, string s2, string s3) {
+static char findCommonChar3(const string &s1, const string &s2, const string &s3) {
   for (int i = 0; i < (int)s1.length(); i++) {
     for (int j = 0; j < (int)s2.length(); j++) {
       for (int k = 0; k < (int)s3.length(); k++) {
@@ -27,7 +27,7 @@ char findCommonChar3(string s1, string s2, string s3) {
   return 0;
 }
 
-int getCharValue(char c) { return (c > 'Z') ? c - 'a' + 1 : c - 'A' + 27; }
+inline static int getCharValue(const char c) { return (c > 'Z') ? c - 'a' + 1 : c - 'A' + 27; }
 
 int main() {
   string line;
@@ -39,7 +39,7 @@ int main() {
   }
   lines.shrink_to_fit();
 
-  for (auto line : lines) {
+  for (const auto &line : lines) {
     string left = line.substr(0, line.size() / 2);
     string right = line.substr(line.size() / 2);
     res1 += getCharValue(findCommonChar2(left, right));

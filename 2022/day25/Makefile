@@ -1,10 +1,19 @@
-run: php
+SRC=$(wildcard *.cpp)
+BIN=$(SRC:.cpp=)
+	GXX=g++
+	CXXFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g
 
-.PHONY: clean
-clean: ;
+run: $(BIN)
+	./$(BIN) < input.txt
 
 test: $(BIN)
-	php -dxdebug.mode=off -dopcache.jit_buffer_size=5M d25.php < test.txt
+	./$(BIN) < test.txt
+
+%: %.cpp
+	$(GXX) $(CXXFLAGS) $< -o $@
+
+clean:
+	rm -f $(BIN)
 
 php:
-	php -dxdebug.mode=off -dopcache.jit_buffer_size=5M d25.php < input.txt
+	php d25.php < input.txt
