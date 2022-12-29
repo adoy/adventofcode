@@ -17,3 +17,6 @@ test: $(CBIN)
 
 clean:
 	rm -f $(CBIN)
+
+js:
+	node d20.js < input.txt
