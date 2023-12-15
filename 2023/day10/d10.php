@@ -40,13 +40,14 @@ foreach ($lines  as $y => $line) {
 foreach (array_keys(DIRECTIONS) as $initialDirection) {
     $map = $originalMap;
     $direction = $initialDirection;
-    $length = 0;
+    $length = $sum = 0;
     while (true) {
         if ($direction & (TOP | RIGHT | BOTTOM | LEFT)) {
             [ $offsetY, $offsetX, $oppositDirection ] = DIRECTIONS[$direction];
             $newCell = $map[$newY = $y + $offsetY][$newX = $x + $offsetX] ?? 0;
             if ($oppositDirection & $newCell) {
                 ++$length;
+                $sum += -($newX - $x) * $y;
                 if ($start === [$newX, $newY]) {
                     $map[$start[1]][$start[0]] = $initialDirection | $oppositDirection | VISITED;
                     break 2;
@@ -61,30 +62,22 @@ foreach (array_keys(DIRECTIONS) as $initialDirection) {
 }
 
 $result1 = $length/2;
+$result2= $sum - $length / 2 + 1;
 
 $width = count($map[0]);
 $height = count($map);
-$printMap = max($width, $height) < 50;
-
-$result2 = 0;
-foreach ($map as $y => $line) {
-    $inside = false;
-    foreach ($line as $x => $cell) {
-        if ($printMap) pc($cell);
-        if ($cell & VISITED) {
-            if ($cell & TOP) {
-                $inside = !$inside;
-            }
-            continue;
+if (max($width, $height) < 50) {
+    foreach ($map as $y => $line) {
+        foreach ($line as $x => $cell) {
+            echo pc($cell);
         }
-        $result2 += $inside ? 1 : 0;
+        echo PHP_EOL;
     }
-    if ($printMap) echo PHP_EOL;
 }
 
 function pc(int $pc)
 {
-    echo match ($pc) {
+    return match ($pc) {
         TOP | BOTTOM => '|',
         TOP | BOTTOM | VISITED => '┃',
         LEFT | RIGHT => '-',
