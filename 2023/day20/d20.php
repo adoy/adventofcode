@@ -29,6 +29,7 @@ foreach ($lines as $line) {
         $map[$d][] = $name;
     }
 }
+assert(isset($map['rx']));
 
 foreach ($modules as $name => $def) {
     if ('&' === $def[0]) {
